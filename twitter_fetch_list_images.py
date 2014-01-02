@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from birdy.twitter import UserClient
+from threading import Thread
 import json
+import random
 import re
+import string
+import time
 import urllib
 import urllib2
-import random
-import string
-from threading import Thread
-import time
 
 def save_image(tweet):
     if isinstance(s, basestring):
