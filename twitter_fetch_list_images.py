@@ -3,9 +3,7 @@
 from birdy.twitter import UserClient
 from threading import Thread
 import json
-import random
 import re
-import string
 import sys
 import time
 import urllib
@@ -17,8 +15,6 @@ def save_image(tweet):
         # 抓出內容中的http://t.co/??????????" URL，該URL會是一個twitter頁面
         re_url = re.match('^.*(http://t.co/..........)\s*.*$', tweet)
         if (re_url != None):
-            # 產生隨機檔名
-            rand_str = ''.join(random.choice(string.ascii_lowercase+string.digits) for x in range(10))
             target_url = re_url.group(1)
             print "parsing: " + target_url
             urldata = urllib.urlopen(target_url)
@@ -31,12 +27,13 @@ def save_image(tweet):
                     img_file_ext = re.match(".*/(.*)\.(.*):large", img_url.group(1))
                     if(img_file_ext != None):
                         ext = img_file_ext.group(2)
+                        fullname = img_file_ext.group(1)+"."+img_file_ext.group(2)
                         # 把圖片存下來
-                        print ">>>> Saving "+img_url.group(1)+" to "+rand_str+"."+ext
+                        print ">>>> Saving "+img_url.group(1)+" to "+fullname
                         if path != '':
-                            urllib.urlretrieve(img_url.group(1), path+"/"+rand_str+"."+ext)
+                            urllib.urlretrieve(img_url.group(1), path+"/"+fullname)
                         else:
-                            urllib.urlretrieve(img_url.group(1), rand_str+"."+ext)
+                            urllib.urlretrieve(img_url.group(1), fullname)
 
 path = ''
 
@@ -70,5 +67,5 @@ for i in range(0,len(lists.data)):
         # 抓出list中tweet的內容
         s = list_statuses.data[j].text
         t = Thread(target=save_image, args=(s,))
-        time.sleep(0.5)
+        time.sleep(1)
         t.start()
