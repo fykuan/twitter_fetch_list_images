@@ -18,13 +18,18 @@ except IOError:
     sys.exit(0)
 
 client = UserClient(json_twitter['CONSUMER_KEY'], json_twitter['CONSUMER_SECRET'], json_twitter['ACCESS_TOKEN'], json_twitter['ACCESS_TOKEN_SECRET'])
+
+# 取得SCREEN_NAME擁有的所有list
 lists = client.api.lists.list.get(screen_name=json_twitter['SCREEN_NAME'])
 for i in range(0,len(lists.data)):
+    # 抓出listid
     id = lists.data[i].id
     list_statuses = client.api.lists.statuses.get(list_id=id)
     for j in range(0,len(list_statuses.data)-1):
+        # 抓出list中tweet的內容
         s = list_statuses.data[j].text
         if isinstance(s, basestring):
+            # 抓出內容中的http://t.co/??????????" URL，該URL會是一個twitter頁面
             re_url = re.match('^.*(http://t.co/..........)\s*.*$', s)
             if (re_url != None):
                 # 產生隨機檔名
@@ -33,7 +38,7 @@ for i in range(0,len(lists.data)):
                 print "parsing: " + target_url
                 urldata = urllib.urlopen(target_url)
                 for line in urldata.readlines():
-                    #print line
+                    # 從頁面中找出圖片的URL
                     img_url = re.match(".*data-resolved-url-large=.(https.*:large)", line)
                     if (img_url != None):
                         print ">> Found Image URL: " + img_url.group(1)
