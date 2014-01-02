@@ -6,9 +6,11 @@ import json
 import random
 import re
 import string
+import sys
 import time
 import urllib
 import urllib2
+
 
 def save_image(tweet):
     if isinstance(s, basestring):
@@ -31,7 +33,21 @@ def save_image(tweet):
                         ext = img_file_ext.group(2)
                         # 把圖片存下來
                         print ">>>> Saving "+img_url.group(1)+" to "+rand_str+"."+ext
-                        urllib.urlretrieve(img_url.group(1), rand_str+"."+ext)
+                        if path != '':
+                            urllib.urlretrieve(img_url.group(1), path+"/"+rand_str+"."+ext)
+                        else:
+                            urllib.urlretrieve(img_url.group(1), rand_str+"."+ext)
+
+path = ''
+
+# 取得argument，作為存檔路徑
+if len(sys.argv) == 1:
+    path = ''
+elif len(sys.argv) == 2:
+    path = sys.argv[1]
+else:
+    print "Please specify file saving directory, or leave blank to save files here"
+    sys.exit(0)
 
 # 打開設定檔twitter.json
 try:
@@ -54,5 +70,5 @@ for i in range(0,len(lists.data)):
         # 抓出list中tweet的內容
         s = list_statuses.data[j].text
         t = Thread(target=save_image, args=(s,))
-        time.sleep(1)
+        time.sleep(0.5)
         t.start()
