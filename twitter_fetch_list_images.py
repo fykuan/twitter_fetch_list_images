@@ -52,7 +52,7 @@ try:
         f_twitter = open('twitter.json', 'r')
         json_twitter = json.loads(f_twitter.read())
 except IOError:
-    print "twitter.json not found";
+    print "twitter.json not found"
     sys.exit(0)
 
 client = UserClient(json_twitter['CONSUMER_KEY'], json_twitter['CONSUMER_SECRET'], json_twitter['ACCESS_TOKEN'], json_twitter['ACCESS_TOKEN_SECRET'])
