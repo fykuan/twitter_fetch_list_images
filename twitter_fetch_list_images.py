@@ -67,5 +67,5 @@ for i in range(0,len(lists.data)):
         # 抓出list中tweet的內容
         s = list_statuses.data[j].text
         t = Thread(target=save_image, args=(s,))
-        time.sleep(1)
+        time.sleep(0.2)
         t.start()
