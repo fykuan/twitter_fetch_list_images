@@ -24,15 +24,15 @@ def save_image(tweet):
                 if (img_url != None):
                     print ">> Found Image URL: " + img_url.group(1)
                     # 取得副檔名
-                    img_file_ext = re.match(".*/(.*)\.(.*):large", img_url.group(1))
+                    img_file_ext = re.match(".*/(.*):large", img_url.group(1))
                     if(img_file_ext != None):
-                        ext = img_file_ext.group(2)
-                        fullname = img_file_ext.group(1)+"."+img_file_ext.group(2)
+                        fullname = img_file_ext.group(1)
                         # 把圖片存下來
-                        print ">>>> Saving "+img_url.group(1)+" to "+fullname
                         if path != '':
-                            urllib.urlretrieve(img_url.group(1), path+"/"+fullname)
+                            print ">>>> Saving " + img_url.group(1) + " to " + path + "/" + fullname
+                            urllib.urlretrieve(img_url.group(1), path + "/" + fullname)
                         else:
+                            print ">>>> Saving " + img_url.group(1) + " to " + fullname
                             urllib.urlretrieve(img_url.group(1), fullname)
 
 path = ''
