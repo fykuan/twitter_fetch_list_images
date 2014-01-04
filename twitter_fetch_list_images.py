@@ -25,7 +25,7 @@ def save_image(tweet):
                     print ">> Found Image URL: " + img_url.group(1)
                     # 取得副檔名
                     img_file_ext = re.match(".*/(.*):large", img_url.group(1))
-                    if(img_file_ext != None):
+                    if (img_file_ext != None):
                         fullname = img_file_ext.group(1)
                         # 把圖片存下來
                         if path != '':
@@ -48,7 +48,7 @@ else:
 
 # 打開設定檔twitter.json
 try:
-    with open ('twitter.json'):
+    with open('twitter.json'):
         f_twitter = open('twitter.json', 'r')
         json_twitter = json.loads(f_twitter.read())
 except IOError:
@@ -59,11 +59,11 @@ client = UserClient(json_twitter['CONSUMER_KEY'], json_twitter['CONSUMER_SECRET'
 
 # 取得SCREEN_NAME擁有的所有list
 lists = client.api.lists.list.get(screen_name=json_twitter['SCREEN_NAME'])
-for i in range(0,len(lists.data)):
+for i in range(0, len(lists.data)):
     # 抓出listid
     id = lists.data[i].id
     list_statuses = client.api.lists.statuses.get(list_id=id)
-    for j in range(0,len(list_statuses.data)-1):
+    for j in range(0, len(list_statuses.data)-1):
         # 抓出list中tweet的內容
         s = list_statuses.data[j].text
         t = Thread(target=save_image, args=(s,))
